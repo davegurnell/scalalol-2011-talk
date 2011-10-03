@@ -1,0 +1,67 @@
+Motivation
+==========
+
+Thought experiment. We want to be able to:
+
+ - write clean, maintainable code;
+ - bind web addresses to pieces of code in our web application;
+ - retrieve data from the URLs in a type-safe fashion;
+ - generate new URLs within our application;
+ - bolt on request-processing functionality as required;
+ - compose routes together to produce other routes. (???)
+
+And we want to do it in an elegant way.
+
+ - simple, clean syntax;
+ - type safety.
+
+Related work
+============
+
+Run through these libraries:
+
+ - Sinatra/Scalatra
+ - Unfiltered,Blueeyes
+ - Dispatch.plt
+ - Lift SiteMap
+
+and comment on:
+
+ - type safety;
+ - bi-directionality;
+ - composability.
+
+See it in action
+================
+
+Show a demo web app - simple phone-book, perhaps? Or calculator?
+
+Show the routing table.
+
+Build it!
+=========
+
+Walk through the essential components of the demo:
+
+ - HLists
+
+ - Simple path example
+   - Assume we want *everything* from the URL
+   - Demonstrate decoding and encoding URLs
+ 
+ - Realistic path example
+   - Decouple path length from argument list length
+
+ - Routes (binding paths to code)
+   - HList <-> Tuple conversion
+   - HList <-> argument list conversion
+
+Extensions
+==========
+
+Where can we take this next? Bit of an open discussion:
+
+ - Dispatch to templates
+ - Rest arguments ??
+ - Type-safe URL parameter parsing ??
+ - Other data from the request ??
