@@ -15,22 +15,6 @@ And we want to do it in an elegant way.
  - simple, clean syntax;
  - type safety.
 
-Related work
-============
-
-Run through these libraries:
-
- - Sinatra/Scalatra
- - Unfiltered,Blueeyes
- - Dispatch.plt
- - Lift SiteMap
-
-and comment on:
-
- - type safety;
- - bi-directionality;
- - composability.
-
 See it in action
 ================
 
@@ -44,14 +28,27 @@ Build it!
 Walk through the essential components of the demo:
 
  - HLists
+   - Data definition of List
+   - Type definition of HList
+   - Very high-level comparison:
+     - Types in List are recursive; types in HList are not
+     - Difference in definition of cons
+   - Pointers to blog posts and discussion
 
  - Simple path example
    - Assume we want *everything* from the URL
    - Demonstrate decoding and encoding URLs
+     - Introduce Bidi function to parse one path part
+   - Introduce Path
+     - Definitions of encode() and decode()
+   - Introduce PCons and PNil
+ 
+ - Simple site example
+   - Iterate over paths
  
  - Realistic path example
    - Decouple path length from argument list length
-
+ 
  - Routes (binding paths to code)
    - HList <-> Tuple conversion
    - HList <-> argument list conversion
@@ -65,3 +62,19 @@ Where can we take this next? Bit of an open discussion:
  - Rest arguments ??
  - Type-safe URL parameter parsing ??
  - Other data from the request ??
+
+? Related work
+==============
+
+Run through these libraries:
+
+ - Sinatra/Scalatra/Django
+ - Unfiltered,Blueeyes
+ - Dispatch.plt
+ - Lift SiteMap
+
+and comment on:
+
+ - type safety;
+ - bi-directionality;
+ - composability.
