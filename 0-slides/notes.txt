@@ -18,9 +18,13 @@ And we want to do it in an elegant way.
 See it in action
 ================
 
-Show a demo web app - simple phone-book, perhaps? Or calculator?
+Show a demo web app - calculator.
 
 Show the routing table.
+
+Possible running example, "/add/NUMBER/to/NUMBER", demonstrates:
+ - typed arguments (part 1)
+ - discarding path fragments (part 2)
 
 Build it!
 =========
