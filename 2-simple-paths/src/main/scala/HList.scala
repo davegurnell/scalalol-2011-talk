@@ -1,5 +1,4 @@
-// ----------------------------------------------
-// HList Implementation based on Mark Harrah's Up
+// HList Implementation based on code by Mark Harrah:
 // https://github.com/harrah/up
 
 sealed trait HList {
@@ -24,21 +23,3 @@ sealed class HNil extends HList {
 }
 
 case object HNil extends HNil
-
-/*
-
-Try these:
-
-val x0 = Nil
-val y0 = HNil
-
-val x1 = 1 :: Nil
-val y1 = 1 :: HNil
-
-val x2 = 2 :: 1 :: Nil
-val y2 = 2 :: 1 :: HNil
-
-val x3 = 2.0 :: 1 :: Nil
-val y3 = 2.0 :: 1 :: HNil
-
-*/

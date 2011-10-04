@@ -1,10 +1,12 @@
 sealed trait Path {
   
-  // The type of the data we're extracting from the URL:
+  /** The type of the data we're extracting from the URL. */
   type Result <: HList
 
+  /** Decode a URL path into an HList. */
   def decode(path: List[String]): Option[Result]
    
+  /** Encode an HList as a URL path. */
   def encode(args: Result): List[String]
   
 }
