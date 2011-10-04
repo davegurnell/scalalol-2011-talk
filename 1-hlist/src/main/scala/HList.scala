@@ -1,5 +1,4 @@
-// ----------------------------------------------
-// HList Implementation based on Mark Harrah's Up
+// HList Implementation based on code by Mark Harrah:
 // https://github.com/harrah/up
 
 sealed trait HList {
@@ -15,15 +14,13 @@ final case class HCons[H, T <: HList](val head : H, val tail : T) extends HList 
     HCons(next, this)
 }
 
-sealed class HNil extends HList {
+case object HNil extends HList {
   type Head = Nothing
   type Tail = HNil
   
   def ::[Next](next: Next) =
     HCons(next, this)
 }
-
-case object HNil extends HNil
 
 /*
 
