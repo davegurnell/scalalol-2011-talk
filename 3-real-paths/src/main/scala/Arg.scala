@@ -32,3 +32,13 @@ case object StringArg extends Arg[String] {
     Some(urlDecode(path, "utf-8"))
   
 }
+
+case class LiteralArg(val segment: String) extends Arg[Unit] {
+  
+  def encode(value: Unit) =
+    urlEncode(segment, "utf-8")
+  
+  def decode(path: String) =
+    Some(())
+  
+}
