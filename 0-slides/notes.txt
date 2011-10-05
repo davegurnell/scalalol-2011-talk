@@ -24,7 +24,7 @@ Show the routing table.
 
 Possible running example, "/add/NUMBER/to/NUMBER", demonstrates:
  - typed arguments (part 1)
- - discarding path fragments (part 2)
+ - discarding path segments (part 2)
 
 Build it!
 =========
@@ -52,6 +52,8 @@ Walk through the essential components of the demo:
  
  - Realistic path example
    - Decouple path length from argument list length
+   - Introduce LiteralArg to capture constant parts of the URL
+   - Introduce PLiteral and PArg subclasses of PCons
  
  - Routes (binding paths to code)
    - HList <-> Tuple conversion
