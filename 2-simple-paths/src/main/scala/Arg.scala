@@ -26,6 +26,7 @@ trait Arg[T] {
   
 }
 
+/** Maps between path segments and integers. */
 case object IntArg extends Arg[Int] {
   
   def encode(value: Int) =
@@ -40,6 +41,7 @@ case object IntArg extends Arg[Int] {
   
 }
 
+/** Maps between path segments and strings. Escapes/unescapes characters that are reserved in URLs. */
 case object StringArg extends Arg[String] {
   
   def encode(value: String) =
