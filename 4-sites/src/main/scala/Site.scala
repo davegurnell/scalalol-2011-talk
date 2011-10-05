@@ -3,7 +3,8 @@ trait Site {
   var routes: List[Route[_]] =
     Nil
   
-  val root = PNil
+  val end = PNil
+  val any = PAny
   
   implicit val site = this
   
