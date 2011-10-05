@@ -44,11 +44,14 @@ sealed trait PCons[H, T <: Path] extends Path {
   
 }
 
-case class PLiteral[T <: Path](val head: LiteralArg, val tail: T) extends PCons[Unit, T] {
+case class PLiteral[T <: Path](headString: String, val tail: T) extends PCons[Unit, T] {
   
   type Head = Unit
   type Tail = T
   type Result = tail.Result
+  
+  val head: Arg[Unit] =
+    LiteralArg(headString)
   
   def decodeReversed(path: List[String]): Option[Result] =
     path match {
@@ -61,11 +64,10 @@ case class PLiteral[T <: Path](val head: LiteralArg, val tail: T) extends PCons[
     }
     
   def encodeReversed(args: Result): List[String] =
-    head.encode(()) ::
-    tail.encode(args)
+    head.encode(()) :: tail.encodeReversed(args)
   
   def /(arg: String) =
-    PLiteral(LiteralArg(arg), this)
+    PLiteral(arg, this)
   
   def /[T](arg: Arg[T]) =
     PArg(arg, this)
@@ -89,11 +91,10 @@ case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends PCons[H, T]
     }
   
   def encodeReversed(args: Result): List[String] =
-    head.encode(args.head) ::
-    tail.encode(args.tail)
+    head.encode(args.head) :: tail.encodeReversed(args.tail)
   
   def /(arg: String) =
-    PLiteral(LiteralArg(arg), this)
+    PLiteral(arg, this)
   
   def /[T](arg: Arg[T]) =
     PArg(arg, this)
@@ -110,10 +111,11 @@ sealed abstract class PNil extends Path {
       case _ => None
     }
   
-  def encodeReversed(args: Result): List[String] = Nil
+  def encodeReversed(args: Result): List[String] =
+    Nil
   
   def /(arg: String) =
-    PLiteral(LiteralArg(arg), this)
+    PLiteral(arg, this)
   
   def /[T](arg: Arg[T]) =
     PArg(arg, this)
