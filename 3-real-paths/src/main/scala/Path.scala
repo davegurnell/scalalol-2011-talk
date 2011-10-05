@@ -12,28 +12,11 @@ sealed trait Path {
   /** The type of data we're extracting from the path, i.e. ignoring segments that aren't arguments. */
   type Result <: HList
   
-  /** Decode a URL path into an argument list, preserving the order of the arguments. */
-  final def decode(path: List[String]): Option[Result] =
-    decodeReversed(path.reverse)
+  /** Decode a URL path into an argument list. */
+  def decode(path: List[String]): Option[Result]
   
-  /** Encode an HList as a URL path, preserving the order of the arguments. */
-  final def encode(args: Result): List[String] =
-    encodeReversed(args).reverse
-  
-  /**
-   * Decode a URL path into an argument list, reversing the order of the arguments.
-   * 
-   * The reversal places PNil at the end of the URL path, which will eventually
-   * provide support for rest-arguments.
-   */
-  def decodeReversed(path: List[String]): Option[Result]
-  
-  /** Encode an HList as a reversed URL path, reversing the order of the arguments.
-   * 
-   * The reversal places PNil at the end of the URL path, which will eventually
-   * provide support for rest-arguments.
-   */
-  def encodeReversed(args: Result): List[String]
+  /** Encode an HList as a URL path. */
+  def encode(args: Result): List[String]
   
 }
 
@@ -53,23 +36,23 @@ case class PLiteral[T <: Path](headString: String, val tail: T) extends PCons[Un
   val head: Arg[Unit] =
     LiteralArg(headString)
   
-  def decodeReversed(path: List[String]): Option[Result] =
+  def decode(path: List[String]): Option[Result] =
     path match {
       case Nil => None
       case h :: t =>
         for {
           h2 <- head.decode(h)
-          t2 <- tail.decodeReversed(t)
+          t2 <- tail.decode(t)
         } yield t2
     }
     
-  def encodeReversed(args: Result): List[String] =
-    head.encode(()) :: tail.encodeReversed(args)
+  def encode(args: Result): List[String] =
+    head.encode(()) :: tail.encode(args)
   
-  def /(arg: String) =
+  def :/:(arg: String) =
     PLiteral(arg, this)
   
-  def /[T](arg: Arg[T]) =
+  def :/:[T](arg: Arg[T]) =
     PArg(arg, this)
   
 }
@@ -80,23 +63,23 @@ case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends PCons[H, T]
   type Tail = T
   type Result = HCons[H, tail.Result]
   
-  def decodeReversed(path: List[String]): Option[Result] =
+  def decode(path: List[String]): Option[Result] =
     path match {
       case Nil => None
       case h :: t =>
         for {
           h2 <- head.decode(h)
-          t2 <- tail.decodeReversed(t)
+          t2 <- tail.decode(t)
         } yield HCons(h2, t2)
     }
   
-  def encodeReversed(args: Result): List[String] =
-    head.encode(args.head) :: tail.encodeReversed(args.tail)
+  def encode(args: Result): List[String] =
+    head.encode(args.head) :: tail.encode(args.tail)
   
-  def /(arg: String) =
+  def :/:(arg: String) =
     PLiteral(arg, this)
   
-  def /[T](arg: Arg[T]) =
+  def :/:[T](arg: Arg[T]) =
     PArg(arg, this)
   
 }
@@ -105,19 +88,19 @@ sealed abstract class PNil extends Path {
   
   type Result = HNil
   
-  def decodeReversed(path: List[String]): Option[Result] =
+  def decode(path: List[String]): Option[Result] =
     path match {
       case Nil => Some(HNil)
       case _ => None
     }
   
-  def encodeReversed(args: Result): List[String] =
+  def encode(args: Result): List[String] =
     Nil
   
-  def /(arg: String) =
+  def :/:(arg: String) =
     PLiteral(arg, this)
   
-  def /[T](arg: Arg[T]) =
+  def :/:[T](arg: Arg[T]) =
     PArg(arg, this)
   
 }
