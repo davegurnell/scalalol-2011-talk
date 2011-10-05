@@ -46,6 +46,8 @@ Walk through the essential components of the demo:
    - Introduce Path
      - Definitions of encode() and decode()
    - Introduce PCons and PNil
+   - Implement "/" method on most concrete types (i.e. PCons and PNil)
+     to make sure compiler infers correct return types
  
  - Simple site example
    - Iterate over paths
@@ -54,6 +56,19 @@ Walk through the essential components of the demo:
    - Decouple path length from argument list length
    - Introduce LiteralArg to capture constant parts of the URL
    - Introduce PLiteral and PArg subclasses of PCons
+   - Move definitions of "/" from PCons to PLiteral and PArg
+     to make sure compiler infers correct return types...
+     include example error message perhaps?
+
+          scala> (PNil / StringArg).encode(HCons("abc", HNil))
+          res4: List[java.lang.String] = List(abc)
+
+          scala> (PNil / StringArg / StringArg).encode(HCons("abc", HCons("def", HNil)))
+          <console>:8: error: type mismatch;
+           found   : HCons[java.lang.String,HNil.type]
+           required: _4.tail.Result where val _4: PArg[String,PCons[String,PNil]]
+                        (PNil / StringArg / StringArg).encode(HCons("abc", HCons("def", HNil)))
+
  
  - Routes (binding paths to code)
    - HList <-> Tuple conversion

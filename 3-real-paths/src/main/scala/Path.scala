@@ -9,10 +9,7 @@ sealed trait Path {
   /** The type of the remainder of the path. */
   type Tail <: Path
   
-  /**
-   * The type of data we're extracting from the path,
-   * i.e. ignoring segments that aren't arguments.
-   */
+  /** The type of data we're extracting from the path, i.e. ignoring segments that aren't arguments. */
   type Result <: HList
   
   /** Decode a URL path into an argument list, preserving the order of the arguments. */
@@ -40,17 +37,14 @@ sealed trait Path {
   
 }
 
-sealed abstract class PCons[H, T <: Path](val head: Arg[H], val tail: T) extends Path {
+sealed trait PCons[H, T <: Path] extends Path {
   
-  def /(arg: String) =
-    PLiteral(arg, this)
-  
-  def /[T](arg: Arg[T]) =
-    PArg(arg, this)
+  def head: Arg[H]
+  def tail: T
   
 }
 
-case class PLiteral[T <: Path](hd: String, tl: T) extends PCons[Unit, T](LiteralArg(hd), tl) {
+case class PLiteral[T <: Path](val head: LiteralArg, val tail: T) extends PCons[Unit, T] {
   
   type Head = Unit
   type Tail = T
@@ -70,9 +64,15 @@ case class PLiteral[T <: Path](hd: String, tl: T) extends PCons[Unit, T](Literal
     head.encode(()) ::
     tail.encode(args)
   
+  def /(arg: String) =
+    PLiteral(LiteralArg(arg), this)
+  
+  def /[T](arg: Arg[T]) =
+    PArg(arg, this)
+  
 }
 
-case class PArg[H, T <: Path](hd: Arg[H], tl: T) extends PCons[H, T](hd, tl) {
+case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends PCons[H, T] {
   
   type Head = Arg[H]
   type Tail = T
@@ -92,6 +92,12 @@ case class PArg[H, T <: Path](hd: Arg[H], tl: T) extends PCons[H, T](hd, tl) {
     head.encode(args.head) ::
     tail.encode(args.tail)
   
+  def /(arg: String) =
+    PLiteral(LiteralArg(arg), this)
+  
+  def /[T](arg: Arg[T]) =
+    PArg(arg, this)
+  
 }
 
 sealed abstract class PNil extends Path {
@@ -107,7 +113,7 @@ sealed abstract class PNil extends Path {
   def encodeReversed(args: Result): List[String] = Nil
   
   def /(arg: String) =
-    PLiteral(arg, this)
+    PLiteral(LiteralArg(arg), this)
   
   def /[T](arg: Arg[T]) =
     PArg(arg, this)
