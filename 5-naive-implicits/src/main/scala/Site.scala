@@ -7,7 +7,7 @@ trait Site extends HListOps {
   
   implicit val site = this
   
-  def add(route: Route[_]): Unit =
+  def addRoute(route: Route[_]): Unit =
     routes = routes :+ route
   
   def dispatch(req: Request): Option[Response] = 
@@ -26,44 +26,48 @@ trait Site extends HListOps {
 
 Try these:
 
-object AddressBook extends Site {
+object Calculator extends Site {
   
   // Routing table:
   
-  val listNames    = root / "names" >> (handleListNames _)
-  val addPerson    = root / "names" / "add" / StringArg >> (handleAddName _)
-  val removePerson = root / "names" / StringArg / "remove" >> (handleRemoveName _)
+  val add      = root / "add"      / IntArg / "to" / IntArg >> (doAdd _)
+  val multiply = root / "multiply" / IntArg / "by" / IntArg >> (doMultiply _)
+  val square   = root / "square"   / IntArg                 >> (doSquare _)
   
   // Implementation:
   
-  var names: List[String] = Nil
-
-  def handleListNames(): Response =
-    Response(names.mkString(", "))
-  
-  def handleAddName(name: String): Response = {
-    names = names :+ name
-    Response("added " + name)
+  def doAdd(a: Int, b: Int): Response = {
+    val ans = a + b
+    Response("%s + %s = %s".format(a, b, ans))
   }
   
-  def handleRemoveName(name: String): Response = {
-    names = names filterNot (_ == name)
-    Response("removed " + name)
+  def doMultiply(a: Int, b: Int): Response = {
+    val ans = a * b
+    Response("%s * %s = %s".format(a, b, ans))
+  }
+  
+  def doSquare(a: Int): Response = {
+    val ans = a * a
+    Response("%s ^ 2 = %s".format(a, ans))
   }
 
 }
 
-import AddressBook._
+Calculator.add((1, 2))
+Calculator.multiply((3, 4))
+Calculator.square(Tuple1(5))
 
-addPerson(Tuple1("Alice"))
-addPerson(Tuple1("Bob"))
-listNames(())
+import Calculator._
+Calculator.add((1, 2))
+Calculator.multiply((3, 4))
+Calculator.square(Tuple1(5))
 
-dispatch(Request("/names/add/Charlie"))
-dispatch(Request("/names/add/Dave"))
-dispatch(Request("/names"))
+Calculator.dispatch(Request("/add/1/to/2"))
+Calculator.dispatch(Request("/multiply/3/by/4"))
+Calculator.dispatch(Request("/square/5"))
 
-addPerson.url(HCons("Alice", HNil))
-removePerson.url(HCons("Alice", HNil))
+Calculator.add.url((1, 2))
+Calculator.multiply.url((3, 4))
+Calculator.square.url(Tuple1(5))
 
 */
