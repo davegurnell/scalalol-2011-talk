@@ -3,7 +3,7 @@ case class Route[Res <: HList](
   val fn: (Res) => Response
 )(implicit val site: Site) {
   
-  site.add(this)
+  site.addRoute(this)
   
   def dispatch(req: Request): Option[Response] =
     path.decode(req.path).map(fn)

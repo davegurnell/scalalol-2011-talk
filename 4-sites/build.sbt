@@ -1,3 +1,3 @@
-name := "simple-paths"
+name := "sites"
 
 version := "0.1"

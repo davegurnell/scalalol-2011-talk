@@ -7,7 +7,7 @@ trait Site {
   
   implicit val site = this
   
-  def add(route: Route[_]): Unit =
+  def addRoute(route: Route[_]): Unit =
     routes = routes :+ route
   
   def dispatch(req: Request): Option[Response] = 
@@ -26,42 +26,48 @@ trait Site {
 
 Try these:
 
-object AddressBook extends Site {
+object Calculator extends Site {
   
   // Routing table:
   
-  val listNames    = root / "names" >> (handleListNames _)
-  val addPerson    = root / "names" / "add" / StringArg >> (handleAddName _)
-  val removePerson = root / "names" / StringArg / "remove" >> (handleRemoveName _)
+  val add      = root / "add"      / IntArg / "to" / IntArg >> (doAdd _)
+  val multiply = root / "multiply" / IntArg / "by" / IntArg >> (doMultiply _)
+  val square   = root / "square"   / IntArg                 >> (doSquare _)
   
   // Implementation:
   
-  var names: List[String] = Nil
-
-  def handleListNames(arg: HNil): Response =
-    Response(names.mkString(", "))
-  
-  def handleAddName(arg: HCons[String, HNil]): Response = {
-    names = names :+ arg.head
-    Response("added " + arg.head)
+  def doAdd(arg: HCons[Int, HCons[Int, HNil]]): Response = {
+    val a = arg.head
+    val b = arg.tail.head
+    val ans = a + b
+    Response("%s + %s = %s".format(a, b, ans))
   }
   
-  def handleRemoveName(arg: HCons[String, HNil]): Response = {
-    names = names filterNot (_ == arg.head)
-    Response("removed " + arg.head)
+  def doMultiply(arg: HCons[Int, HCons[Int, HNil]]): Response = {
+    val a = arg.head
+    val b = arg.tail.head
+    val ans = a * b
+    Response("%s * %s = %s".format(a, b, ans))
+  }
+  
+  def doSquare(arg: HCons[Int, HNil]): Response = {
+    val a = arg.head
+    val ans = a * a
+    Response("%s ^ 2 = %s".format(a, ans))
   }
 
 }
 
-AddressBook.addPerson(HCons("Alice", HNil))
-AddressBook.addPerson(HCons("Bob", HNil))
-AddressBook.listNames(HNil)
+Calculator.add(HCons(2, HCons(1, HNil)))
+Calculator.multiply(HCons(4, HCons(3, HNil)))
+Calculator.square(HCons(5, HNil))
 
-AddressBook.dispatch(Request("/names/add/Charlie"))
-AddressBook.dispatch(Request("/names/add/Dave"))
-AddressBook.dispatch(Request("/names"))
+Calculator.dispatch(Request("/add/1/to/2"))
+Calculator.dispatch(Request("/multiply/3/by/4"))
+Calculator.dispatch(Request("/square/5"))
 
-AddressBook.addPerson.url(HCons("Alice", HNil))
-AddressBook.removePerson.url(HCons("Alice", HNil))
+Calculator.add.url(HCons(2, HCons(1, HNil)))
+Calculator.multiply.url(HCons(4, HCons(3, HNil)))
+Calculator.square.url(HCons(5, HNil))
 
 */
