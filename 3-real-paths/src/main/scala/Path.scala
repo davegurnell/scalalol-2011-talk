@@ -1,3 +1,6 @@
+import java.net.URLEncoder.{encode => urlEncode}
+import java.net.URLDecoder.{decode => urlDecode}
+
 sealed trait Path {
   
   /**
@@ -107,10 +110,34 @@ sealed abstract class PNil extends Path {
 
 case object PNil extends PNil
 
+sealed abstract class PAny extends Path {
+  
+  type Result = HCons[List[String], HNil]
+  
+  def decode(path: List[String]): Option[Result] =
+    Some(HCons(path.map(str => urlDecode(str, "utf-8")), HNil))
+  
+  def encode(args: Result): List[String] =
+    args.head.map(str => urlEncode(str, "utf-8"))
+  
+  def :/:(arg: String) =
+    PLiteral(arg, this)
+  
+  def :/:[T](arg: Arg[T]) =
+    PArg(arg, this)
+  
+}
+
+case object PAny extends PAny
+
 /*
 
 Try this:
 
-val path = PNil / "add" / IntArg / "to" / IntArg
+val path = "add" :/: IntArg :/ :"to" :/: IntArg :/: PNil
+
+path.decode(List("a", "abc", "b", "123", "c"))
+
+path.encode(HCons("abc", HCons(123, HNil)))
 
 */
