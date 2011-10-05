@@ -1,4 +1,4 @@
-trait Site {
+trait Site extends RequestHandler {
 
   var routes: List[Route[_]] =
     Nil

@@ -1,6 +1,6 @@
 import HListOps._
 
-class Route[Res <: HList](site: Site, path: Path { type Result = Res }, fn: (Res) => Response) {
+class Route[Res <: HList](site: Site, path: Path { type Result = Res }, fn: (Res) => Response) extends RequestHandler {
   
   site.addRoute(this)
   

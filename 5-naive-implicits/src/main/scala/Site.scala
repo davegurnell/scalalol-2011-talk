@@ -1,4 +1,4 @@
-trait Site extends HListOps {
+trait Site extends RequestHandler with HListOps {
 
   var routes: List[Route[_]] =
     Nil

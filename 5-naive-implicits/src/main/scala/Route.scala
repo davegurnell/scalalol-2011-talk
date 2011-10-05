@@ -1,7 +1,7 @@
 case class Route[Res <: HList](
   val path: Path { type Result = Res },
   val fn: (Res) => Response
-)(implicit val site: Site) {
+)(implicit val site: Site) extends RequestHandler {
   
   site.addRoute(this)
   
