@@ -14,7 +14,7 @@ final case class HCons[H, T <: HList](val head : H, val tail : T) extends HList 
     HCons(next, this)
 }
 
-sealed class HNil extends HList {
+sealed abstract class HNil extends HList {
   type Head = Nothing
   type Tail = HNil
   

@@ -11,9 +11,9 @@ sealed trait Path {
   
 }
 
-case class PCons[Hd, Tl <: Path](val head: Arg[Hd], val tail: Tl) extends Path {
+case class PCons[H, T <: Path](val head: Arg[H], val tail: T) extends Path {
   
-  type Result = HCons[Hd, tail.Result]
+  type Result = HCons[H, tail.Result]
   
   def decode(path: List[String]): Option[Result] =
     path match {
