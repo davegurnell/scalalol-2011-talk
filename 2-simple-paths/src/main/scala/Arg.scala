@@ -51,15 +51,3 @@ case object StringArg extends Arg[String] {
     Some(urlDecode(path, "utf-8"))
   
 }
-
-/*
-
-Try these:
-
-StringArg decode "123"
-IntArg    decode "123"
-
-StringArg decode "abc"
-IntArg    decode "abc"
-
-*/

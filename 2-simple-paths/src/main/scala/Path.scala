@@ -50,13 +50,3 @@ case object PNil extends Path {
     PCons(arg, this)
   
 }
-
-/*
-
-Try these:
-
-val path = PNil / StringArg / IntArg
-path decode List("123", "abc")
-path decode List("abc", "123")
-
-*/
