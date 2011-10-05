@@ -14,13 +14,15 @@ final case class HCons[H, T <: HList](val head : H, val tail : T) extends HList 
     HCons(next, this)
 }
 
-case object HNil extends HList {
+sealed abstract class HNil extends HList {
   type Head = Nothing
   type Tail = HNil
   
   def ::[Next](next: Next) =
     HCons(next, this)
 }
+
+case object HNil extends HNil
 
 /*
 
