@@ -1,3 +1,3 @@
-name := "simple-paths"
+name := "real-paths"
 
 version := "0.1"

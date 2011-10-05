@@ -59,7 +59,7 @@ case class PLiteral[T <: Path](headString: String, val tail: T) extends PCons[Un
       case h :: t =>
         for {
           h2 <- head.decode(h)
-          t2 <- tail.decode(t)
+          t2 <- tail.decodeReversed(t)
         } yield t2
     }
     
@@ -86,7 +86,7 @@ case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends PCons[H, T]
       case h :: t =>
         for {
           h2 <- head.decode(h)
-          t2 <- tail.decode(t)
+          t2 <- tail.decodeReversed(t)
         } yield HCons(h2, t2)
     }
   
