@@ -21,7 +21,7 @@ case class PCons[H, T <: Path](val head: Arg[H], val tail: T) extends Path {
       case h :: t =>
         for {
           h2 <- head.decode(h)
-          t2 <- tail.decode(t)
+          t2 <- tail.decodeReversed(t)
         } yield HCons(h2, t2)
     }
   
