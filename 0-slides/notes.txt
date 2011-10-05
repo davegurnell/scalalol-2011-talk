@@ -50,10 +50,13 @@ Walk through the essential components of the demo:
      to make sure compiler infers correct return types
  
  - Realistic path example
-   - Decouple path length from argument list length
-   - Introduce LiteralArg to capture constant parts of the URL
-   - Introduce PLiteral and PArg subclasses of PCons
-   - Move definitions of "/" from PCons to PLiteral and PArg
+   - Want to decouple path length from argument list length
+     - Introduce LiteralArg to capture constant parts of the URL
+     - Introduce PLiteral and PArg subclasses of PCons
+   - Want rest-style arguments
+     - Swap "/" for ":/:" to make it right-associative
+     - As we're building the Path from right to left, we can have PAny as well as PNil
+   - Move definitions of ":/:" from PCons to PLiteral and PArg
      to make sure compiler infers correct return types...
      include example error message perhaps?
 
@@ -69,7 +72,7 @@ Walk through the essential components of the demo:
  - Simple site example
    - Introduce Route to bind paths to functions
    - Introduce Site to collect routes into a single dispatch function
-   - Add a ">>()" method to Path that combines it with a function to produce a route
+   - Add a ">>" method to PLiteral, PArg, PNil and PAny that combines the Path with a function and a Site to produce a route
      - Use implicit arguments to pass in a reference to the Site, so the route can register itself
    - Problems:
      - HLists are a pain to destructure
