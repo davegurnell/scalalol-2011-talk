@@ -49,9 +49,6 @@ Walk through the essential components of the demo:
    - Implement "/" method on most concrete types (i.e. PCons and PNil)
      to make sure compiler infers correct return types
  
- - Simple site example
-   - Iterate over paths
- 
  - Realistic path example
    - Decouple path length from argument list length
    - Introduce LiteralArg to capture constant parts of the URL
@@ -69,6 +66,35 @@ Walk through the essential components of the demo:
            required: _4.tail.Result where val _4: PArg[String,PCons[String,PNil]]
                         (PNil / StringArg / StringArg).encode(HCons("abc", HCons("def", HNil)))
 
+ - Simple site example
+   - Introduce Route to bind paths to functions
+   - Introduce Site to collect routes into a single dispatch function
+   - Add a ">>()" method to Path that combines it with a function to produce a route
+     - Use implicit arguments to pass in a reference to the Site, so the route can register itself
+   - Problems:
+     - HLists are a pain to destructure
+     - the arguments to the route functions are all HLists
+     - the arguments to the url() and apply() methods are also HLists
+ 
+ - Simple implicits example
+   - Convert conventional FunctionN objects to HList functions
+     - Use implicit conversions so we can pass FunctionN objects to >>()
+   - Attempt to simplify url() and apply() by converting Tuples to HLists. Problems:
+     - there's no Tuple0 ... Unit partially suffices;
+     - Tuple1 is a pain to write;
+     - you need to import the HListOps implicits wherever you call the methods
+ 
+ - Better implicits example:
+   - Rather than change the the arguments to the methods on Route, change the methods themselves
+     - Add RouteN subclasses of Route
+       - Accept FunctionN objects as constructor arguments, and wrap them as appropriate
+       - Have url() and apply() methods with the right number of arguments
+     - Use implicit conversions to "pimp" Paths of various arities to add a >>() method with the right return type
+     - Use implicit argument lists to add the reference to the site in at the last minute
+     - Define the path pimping functionality in a separate trait called RouteBuilder and mix it into Site
+       - Define a few arities by default to suit most peoples' needs
+       - Users can easily add more by subclassing RouteBuilder
+       - Potential to add another set of pimps (e.g. >>> function) to get URLs with rest arguments
  
  - Routes (binding paths to code)
    - HList <-> Tuple conversion
