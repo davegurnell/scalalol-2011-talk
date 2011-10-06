@@ -9,6 +9,10 @@ class Boot {
 
   def boot {
     LiftRules.addToPackages("code")
+
     LiftRules.dispatch.append(code.Site.dispatchPF)
+
+    LiftRules.htmlProperties.default.set((r: Req) => new Html5Properties(r.userAgent))    
   }
+  
 }

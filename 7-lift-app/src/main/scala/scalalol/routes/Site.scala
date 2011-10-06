@@ -3,7 +3,7 @@ package routes
 
 import net.liftweb.http._
 
-trait Site extends RequestHandler with RouteBuilder {
+trait Site extends RequestHandler with RouteBuilder with LiftSiteExtras {
 
   var routes: List[Route[_]] =
     Nil

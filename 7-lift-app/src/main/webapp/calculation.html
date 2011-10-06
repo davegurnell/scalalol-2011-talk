@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>Calculat-o-tron 2000</title>
+
+    <style type="text/css">
+      body {
+        font-size: 50px;
+        font-family: sans-serif;
+      }
+
+      h1 {
+        font-size: 1.2em;
+        text-align: center;
+      }
+
+      dl {
+        width: 10em;
+        margin: 0 auto;
+      }
+
+      dt {
+        clear: left;
+        float: left;
+        width: 6em;
+        text-align: right;
+        color: #099;
+        font-weight: bold;
+      }
+
+      dt:after { content: ':'; }
+
+      dd { float: left; }
+
+      .op  { color: #f00; }
+      .arg { color: #f90; }
+      .ans { color: #0c0; }
+
+      ul { list-style: none; margin: 0; padding: 0; }
+      li { display: inline; padding-right: 1em; }
+    </style>
+  </head>
+  <body>
+    <h1>Calculation COMPLETE!</h1>
+    <dl class="lift:CalculationView">
+      <dt>Operation</dt>
+      <dd><span class="op"></span></dd>
+      
+      <dt>Arguments</dt>
+      <dd><ul class="args"><li class="arg"></li></ul></dd>
+      
+      <dt>Result</dt>
+      <dd><span class="ans"></span></dd>
+    </dl>
+  </body>
+</html>
