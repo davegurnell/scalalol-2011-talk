@@ -23,22 +23,22 @@ object Site extends scalalol.routes.Site {
 
   def doMultiply(a: Int, b: Int): LiftResponse = {
     val ans = a * b
-    textResponse("%s * %s = %s".format(a, b, ans))
+    templateResponse(Calculation("*", List(a, b), ans), "calculation" :: Nil)
   }
 
   def doSquare(a: Int): LiftResponse = {
     val ans = a * a
-    textResponse("%s ^ 2 = %s".format(a, ans))
+    templateResponse(Calculation("square", List(a), ans), "calculation" :: Nil)
   }
   
   def doStringMultiply(a: String, b: Int): LiftResponse = {
     val ans = a * b
-    textResponse("%s * %s = %s".format(a, b, ans))
+    templateResponse(Calculation("stringMultiply", List(a, b), ans), "calculation" :: Nil)
   }
   
   def doStringAppend(args: List[String]): LiftResponse = {
     val ans = args.mkString
-    textResponse("append(%s) = %s".format(args, ans))
+    templateResponse(Calculation("stringAppend", args, ans), "calculation" :: Nil)
   }
   
 }

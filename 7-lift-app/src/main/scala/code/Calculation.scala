@@ -1,3 +1,3 @@
 package code
 
-case class Calculation(op: String, args: List[Int], ans: Int)
+case class Calculation(val op: String, val args: List[Any], val ans: Any)
