@@ -1,5 +1,5 @@
-A Route To The Three "R"s: Reading, Writing and REST
-====================================================
+A Route To The Three "R"s: Reading, Writing and the REST
+========================================================
 
 Slides, notes and code samples for my talk at Scala Lift-Off London 2011.
 
