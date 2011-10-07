@@ -1,4 +1,4 @@
-name := "real-paths"
+name := "2-hlists"
 
 version := "0.1"
 

@@ -1,4 +1,4 @@
-name := "real-paths"
+name := "1-args"
 
 version := "0.1"
 

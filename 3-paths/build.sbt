@@ -1,4 +1,4 @@
-name := "real-paths"
+name := "3-paths"
 
 version := "0.1"
 

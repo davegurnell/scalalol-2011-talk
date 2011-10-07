@@ -1,4 +1,4 @@
-name := "sites"
+name := "4-routes"
 
 version := "0.1"
 
