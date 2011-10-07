@@ -3,15 +3,6 @@ import java.net.URLDecoder.{decode => urlDecode}
 
 sealed trait Path {
   
-  /**
-   * The type of the argument being captured in the head of the path,
-   * or Unit if we're ignoring the head segment.
-   */
-  type Head
-  
-  /** The type of the remainder of the path. */
-  type Tail <: Path
-  
   /** The type of data we're extracting from the path, i.e. ignoring segments that aren't arguments. */
   type Result <: HList
   
@@ -23,34 +14,22 @@ sealed trait Path {
   
 }
 
-sealed trait PCons[H, T <: Path] extends Path {
+case class PLiteral[T <: Path](rawHead: String, val tail: T) extends Path {
   
-  def head: Arg[H]
-  def tail: T
-  
-}
-
-case class PLiteral[T <: Path](headString: String, val tail: T) extends PCons[Unit, T] {
-  
-  type Head = Unit
-  type Tail = T
   type Result = tail.Result
   
-  val head: Arg[Unit] =
-    LiteralArg(headString)
+  val head: String =
+    urlEncode(rawHead, "utf-8")
   
   def decode(path: List[String]): Option[Result] =
     path match {
       case Nil => None
       case h :: t =>
-        for {
-          h2 <- head.decode(h)
-          t2 <- tail.decode(t)
-        } yield t2
+        if(h == head) tail.decode(t) else None
     }
     
   def encode(args: Result): List[String] =
-    head.encode(()) :: tail.encode(args)
+    head :: tail.encode(args)
   
   def :/:(arg: String) =
     PLiteral(arg, this)
@@ -63,10 +42,8 @@ case class PLiteral[T <: Path](headString: String, val tail: T) extends PCons[Un
   
 }
 
-case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends PCons[H, T] {
+case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends Path {
   
-  type Head = Arg[H]
-  type Tail = T
   type Result = HCons[H, tail.Result]
   
   def decode(path: List[String]): Option[Result] =
