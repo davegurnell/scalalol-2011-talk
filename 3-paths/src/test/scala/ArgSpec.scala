@@ -22,16 +22,4 @@ class ArgSpec extends Specification {
     StringArg.decode("a%2Fb") must beSome("a/b")
   }
   
-  "LiteralArg.encode encodes to a literal" in {
-    LiteralArg("anything").encode(()) mustEqual "anything"
-  }
-  
-  "LiteralArg.decode decodes to Unit" in {
-    LiteralArg("anything").decode("anything") must beSome(())
-  }
-
-  "LiteralArg.decode only decodes the correct path segment" in {
-    LiteralArg("anything").decode("nothing") must beNone
-  }
-  
 }

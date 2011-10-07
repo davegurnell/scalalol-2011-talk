@@ -51,17 +51,3 @@ case object StringArg extends Arg[String] {
     Some(urlDecode(path, "utf-8"))
   
 }
-
-/**
- * Dummy arg to match against a fixed URL segment.
- * Only decodes the segment if it matches the exact string specified in the constructor.
- */
-case class LiteralArg(val expected: String) extends Arg[Unit] {
-  
-  def encode(value: Unit) =
-    urlEncode(expected, "utf-8")
-  
-  def decode(path: String) =
-    if(urlDecode(path, "utf-8") == expected) Some(()) else None
-  
-}
