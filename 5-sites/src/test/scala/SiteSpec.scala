@@ -48,7 +48,7 @@ class SiteSpec extends Specification {
     Calculator.dispatch(Request("/add/1/to/2"))         must beSome(Response("1 + 2 = 3"))
     Calculator.dispatch(Request("/multiply/3/by/4"))    must beSome(Response("3 * 4 = 12"))
     Calculator.dispatch(Request("/square/5"))           must beSome(Response("5 * 5 = 25"))
-    Calculator.dispatch(Request("/multiply/abc/by/2"))  must beSome(Response("abc * 2 = abcabc"))
+    Calculator.dispatch(Request("/repeat/abc/2/times")) must beSome(Response("abc * 2 = abcabc"))
     Calculator.dispatch(Request("/append/abc/def/ghi")) must beSome(Response("append(List(abc, def, ghi)) = abcdefghi"))
     Calculator.dispatch(Request("/foo"))                must beNone
   }

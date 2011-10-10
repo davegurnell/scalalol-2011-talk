@@ -1,9 +1,6 @@
 package bigtop
 package routes
 
-import java.net.URLEncoder.{encode => urlEncode}
-import java.net.URLDecoder.{decode => urlDecode}
-
 /**
  * Trait describing the required behaviour to map URL path segments
  * to typed values we can use in our applications.
@@ -32,12 +29,12 @@ trait Arg[T] {
 /** Maps between path segments and integers. */
 case object IntArg extends Arg[Int] {
   
-  def encode(value: Int) =
-    urlEncode(value.toString, "utf-8")
+  def encode(in: Int) =
+    in.toString
   
-  def decode(path: String) =
+  def decode(in: String) =
     try {
-      Some(urlDecode(path, "utf-8").toInt)
+      Some(in.toInt)
     } catch {
       case exn: NumberFormatException => None
     }
@@ -47,10 +44,10 @@ case object IntArg extends Arg[Int] {
 /** Maps between path segments and strings. Escapes/unescapes characters that are reserved in URLs. */
 case object StringArg extends Arg[String] {
   
-  def encode(value: String) =
-    urlEncode(value, "utf-8")
+  def encode(in: String) =
+    in
   
-  def decode(path: String) =
-    Some(urlDecode(path, "utf-8"))
+  def decode(in: String) =
+    Some(in)
   
 }

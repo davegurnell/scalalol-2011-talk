@@ -3,26 +3,6 @@ package routes
 
 trait HListOps {
   
-  implicit def unitToHList(t: Unit): HNil =
-    HNil
-  
-  implicit def tuple1ToHList[A](t: Tuple1[A]): HCons[A, HNil] =
-    HCons(t._1, HNil)
-
-  implicit def tuple2ToHList[A, B](t: Tuple2[A, B]): HCons[A, HCons[B, HNil]] =
-    HCons(t._1, HCons(t._2, HNil))
-  
-  implicit def tuple3ToHList[A, B, C](t: Tuple3[A, B, C]): HCons[A, HCons[B, HCons[C, HNil]]] =
-    HCons(t._1, HCons(t._2, HCons(t._3, HNil)))
-
-  implicit def tuple4ToHList[A, B, C, D](t: Tuple4[A, B, C, D]): HCons[A, HCons[B, HCons[C, HCons[D, HNil]]]] =
-    HCons(t._1, HCons(t._2, HCons(t._3, HCons(t._4, HNil))))
-
-  implicit def tuple5ToHList[A, B, C, D, E](t: Tuple5[A, B, C, D, E]): HCons[A, HCons[B, HCons[C, HCons[D, HCons[E, HNil]]]]] =
-    HCons(t._1, HCons(t._2, HCons(t._3, HCons(t._4, HCons(t._5, HNil)))))
-  
-  // Functions to HList functions ---------------
-  
   implicit def hlistFunction0[A, Res](fn: () => Res) =
     new Function1[HNil, Res] {
       def apply(in: HNil): Res = {

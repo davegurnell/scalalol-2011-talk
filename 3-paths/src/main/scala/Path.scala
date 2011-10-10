@@ -1,6 +1,3 @@
-import java.net.URLEncoder.{encode => urlEncode}
-import java.net.URLDecoder.{decode => urlDecode}
-
 sealed trait Path {
   
   /** The type of data we're extracting from the path, i.e. ignoring segments that aren't arguments. */
@@ -14,12 +11,9 @@ sealed trait Path {
   
 }
 
-case class PLiteral[T <: Path](rawHead: String, val tail: T) extends Path {
+case class PLiteral[T <: Path](val head: String, val tail: T) extends Path {
   
   type Result = tail.Result
-  
-  val head: String =
-    urlEncode(rawHead, "utf-8")
   
   def decode(path: List[String]): Option[Result] =
     path match {
@@ -92,10 +86,10 @@ sealed abstract class PAny extends Path {
   type Result = HCons[List[String], HNil]
   
   def decode(path: List[String]): Option[Result] =
-    Some(HCons(path.map(str => urlDecode(str, "utf-8")), HNil))
+    Some(path :: HNil)
   
   def encode(args: Result): List[String] =
-    args.head.map(str => urlEncode(str, "utf-8"))
+    args.head
   
   def :/:(arg: String) =
     PLiteral(arg, this)

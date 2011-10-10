@@ -10,7 +10,7 @@ case class Route[Res <: HList](
     path.decode(req.path).map(fn)
   
   def url(arg: Res) =
-    path.encode(arg).mkString("/", "/", "")
+    Request.createUrl(path.encode(arg))
   
   def apply(arg: Res) =
     fn.apply(arg)
