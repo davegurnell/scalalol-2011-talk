@@ -32,11 +32,11 @@ case class PLiteral[T <: Path](val head: String, val tail: T) extends Path {
     PLiteral(arg, this)
   
   def :/:[T](arg: Arg[T]) =
-    PArg(arg, this)
+    PMatch(arg, this)
   
 }
 
-case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends Path {
+case class PMatch[H, T <: Path](val head: Arg[H], val tail: T) extends Path {
   
   type Result = HCons[H, tail.Result]
   
@@ -57,7 +57,7 @@ case class PArg[H, T <: Path](val head: Arg[H], val tail: T) extends Path {
     PLiteral(arg, this)
   
   def :/:[T](arg: Arg[T]) =
-    PArg(arg, this)
+    PMatch(arg, this)
   
 }
 
@@ -78,7 +78,7 @@ sealed abstract class PNil extends Path {
     PLiteral(arg, this)
   
   def :/:[T](arg: Arg[T]) =
-    PArg(arg, this)
+    PMatch(arg, this)
   
 }
 
@@ -98,7 +98,7 @@ sealed abstract class PAny extends Path {
     PLiteral(arg, this)
   
   def :/:[T](arg: Arg[T]) =
-    PArg(arg, this)
+    PMatch(arg, this)
   
 }
 

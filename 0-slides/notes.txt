@@ -52,11 +52,11 @@ Walk through the essential components of the demo:
  - Realistic path example
    - Want to decouple path length from argument list length
      - Introduce LiteralArg to capture constant parts of the URL
-     - Introduce PLiteral and PArg subclasses of PCons
+     - Introduce PLiteral and PMatch subclasses of PCons
    - Want rest-style arguments
      - Swap "/" for ":/:" to make it right-associative
      - As we're building the Path from right to left, we can have PAny as well as PNil
-   - Move definitions of ":/:" from PCons to PLiteral and PArg
+   - Move definitions of ":/:" from PCons to PLiteral and PMatch
      to make sure compiler infers correct return types...
      include example error message perhaps?
 
@@ -66,13 +66,13 @@ Walk through the essential components of the demo:
           scala> (PNil / StringArg / StringArg).encode(HCons("abc", HCons("def", HNil)))
           <console>:8: error: type mismatch;
            found   : HCons[java.lang.String,HNil.type]
-           required: _4.tail.Result where val _4: PArg[String,PCons[String,PNil]]
+           required: _4.tail.Result where val _4: PMatch[String,PCons[String,PNil]]
                         (PNil / StringArg / StringArg).encode(HCons("abc", HCons("def", HNil)))
 
  - Simple site example
    - Introduce Route to bind paths to functions
    - Introduce Site to collect routes into a single dispatch function
-   - Add a ">>" method to PLiteral, PArg, PNil and PAny that combines the Path with a function and a Site to produce a route
+   - Add a ">>" method to PLiteral, PMatch, PNil and PAny that combines the Path with a function and a Site to produce a route
      - Use implicit arguments to pass in a reference to the Site, so the route can register itself
    - Problems:
      - HLists are a pain to destructure

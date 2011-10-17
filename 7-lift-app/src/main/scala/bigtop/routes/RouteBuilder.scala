@@ -59,3 +59,5 @@ trait RouteBuilder {
     }
 
 }
+
+object RouteBuilder extends RouteBuilder
