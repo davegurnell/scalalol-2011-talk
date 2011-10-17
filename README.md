@@ -12,15 +12,17 @@ Scala provides all the tools we need to address this problem in a more comprehen
 
 [Bigtop Routes]: http://bigtopweb.com/routes
 
-Slides
-------
+Video and Slides
+----------------
+
+Skills Matter have posted a video of the talk here:
+
+ - http://skillsmatter.com/podcast/scala/reading-writing-rest
 
 The slides are available here:
 
  - Keynote file: https://github.com/davegurnell/scalalol-2011-talk/blob/master/0-slides/slides.key
  - PDF export:   https://github.com/davegurnell/scalalol-2011-talk/blob/master/0-slides/slides.pdf
-
-The slides probably won't be of much use to you on their own. Sorry about that - it's just that kind of talk. Hopefully the Skills Matter guys will record the talk and put up a video. If/when they do, I'll post the link here.
 
 Code
 ----
